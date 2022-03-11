@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+{% block body %}
+	<div class="container col-md-8 mt-4">
+		<div class="row">
+			<div class="col">
+				<img src="{{ product.image }}" width="400" height="400">
+			</div>
+			<div class="col mt-5 text-center">
+				<h1 class="text text-danger">{{ product.name }}</h1>
+				<h2 class="text text-primary">Price:
+					{{ product.price }}
+					VND</h2>
+				<h2 class="text text-primary">Category:
+					{% for item in product.category %}
+						<a class="text-decoration-none" href="{{ path('app_product_detail', {'id' : item.id })}}">
+							<h5 class="text text-success">{{ item.name }}
+							</h5>
+						</a>
+					{% endfor %}
+				</h2>
+			</div>
+            <div class="col mt-5 text-center">
+            <a href="{{path('app_product_delete', {'id': product.id })}}"><button class="btn btn-primary">Remove</button></a>
+            <a href="{{path('app_product_edit', {'id': product.id })}}"><button class="btn btn-primary">Edit</button></a>
+
+
+            </div>
+		</div>
+	</div>
+{% endblock %}

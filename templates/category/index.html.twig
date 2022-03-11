@@ -1,20 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoryController!{% endblock %}
+{% block title %}Hello CategoryController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/vietd/Desktop/S/G/1639/p1/ASM/web/webasm1/src/Controller/CategoryController.php'|file_link(0) }}">src/Controller/CategoryController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/vietd/Desktop/S/G/1639/p1/ASM/web/webasm1/templates/category/index.html.twig'|file_link(0) }}">templates/category/index.html.twig</a></code></li>
-    </ul>
-</div>
+	{% for flash in app.flashes("Success") %}
+		<p class="alert alert-primary">{{ flash }}</p>
+	{% endfor %}
+	{% for flash in app.flashes("Error") %}
+		<p class="alert alert-danger">{{ flash }}</p>
+	{% endfor %}
+	<div class="container px-4">
+		<div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+			{% for item in categories %}
+				<div class="p-3 border bg-light">
+						<div class="p-3 border bg-light">{{item.name}}</div>
+                    <a href="{{ path('app_category_delete', {'id' : item.id })}}">
+						<button class="btn btn-danger">Delete</button>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}
