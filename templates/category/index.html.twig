@@ -24,6 +24,9 @@
 		<p class="alert alert-danger">{{ flash }}</p>
 	{% endfor %}
 	<div class="container px-4">
+	<div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+	<a href="{{ path('app_category_add')}}"><button class = "btn btn-primary">Add new category</button></a>
+	</div?
 		<div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
 			{% for item in categories %}
 				<div class="p-3 border bg-light">
