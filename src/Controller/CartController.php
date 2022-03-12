@@ -7,12 +7,10 @@ use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\CartRepository;
 use DateTime;
-use Doctrine\ORM\Mapping\Id;
-use SebastianBergmann\Environment\Console;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 
 #[Route('/cart')]
@@ -31,13 +29,61 @@ class CartController extends AbstractController
         ]);
     }
 
+
+    /** 
+     * @IsGranted("ROLE_ADMIN")
+     */ 
+    #[Route('/view_order', name: 'cart_view_order')]
+    public function view_list_ordering(CartRepository $cartRepository)
+    {
+        $items = $cartRepository->findBy(array('status' => ['ordering', 'deliver']));
+
+        return $this->render('cart/admin/view_order.html.twig', [
+            'items' => $items,
+        ]);
+    }
+
+     /** 
+     * @IsGranted("ROLE_ADMIN")
+     */ 
+    #[Route('/accept/{id}', name: 'cart_accept_order')]
+    public function accept_order($id, CartRepository $cartRepository)
+    {
+        $item = $cartRepository->find($id);
+        $item->setStatus('deliver');
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($item);
+        $manager->flush();
+
+        return $this->redirectToRoute("cart_view_order");
+    }
+
+     /** 
+     * @IsGranted("ROLE_ADMIN")
+     */ 
+    #[Route('/deny/{$id}', name: 'cart_deny_order')]
+    public function deny_order($id ,CartRepository $cartRepository)
+    {
+        $item = $cartRepository->find($id);
+        $item->setStatus('canceled');
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($item);
+        $manager->flush();
+
+        return $this->redirectToRoute("cart_view_order");
+
+    }
+
     #[Route('/history/{user}', name: 'cart_history')]
     public function view_history($user, CartRepository $cartRepository)
     {
         $cur_user = $this->getDoctrine()->getRepository(User::class)->find($user);
         #$items = $cartRepository->list_item();
 
-        $items = $cartRepository->findAll();
+        $items = $cartRepository->findBy(array('user' => [$cur_user]));
+
 
         return $this->render('cart/order_history.html.twig', [
             'items' => $items,
@@ -63,7 +109,7 @@ class CartController extends AbstractController
         }
         $manager->flush();
         
-        return $this->redirectToRoute('cart_history');
+        return $this->redirectToRoute('cart_history', ['user' => $user]);
     }
 
      

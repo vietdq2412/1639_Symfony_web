@@ -79,7 +79,10 @@
 								{% endif %}
 								{% if is_granted('ROLE_ADMIN') %}
 									<li class="nav-item">
-										<a class="nav-link" href="{{path('app_category')}}">List Category</a>
+										<a class="nav-link" href="{{path('app_category')}}">Categories</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{path('cart_view_order')}}">Order list</a>
 									</li>
 								{% endif %}
 							</ul>
