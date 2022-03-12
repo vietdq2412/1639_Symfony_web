@@ -27,9 +27,13 @@ class Product
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
     private $category;
 
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Cart::class)]
+    private $carts;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
 
@@ -94,6 +98,36 @@ class Product
     public function removeCategory(Category $category): self
     {
         $this->category->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts[] = $cart;
+            $cart->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getProducts() === $this) {
+                $cart->setProducts(null);
+            }
+        }
 
         return $this;
     }

@@ -29,7 +29,7 @@
 						</a>
 					{% endif %}
 
-					<a href="{{ path('app_product_edit', {'id' : product.id })}}">
+					<a href="{{ path('app_cart_add', {'id' : product.id, 'user': app.user.getId()})}}">
 						<button class="btn btn-primary">Add to cart</button>
 					</a>
 
