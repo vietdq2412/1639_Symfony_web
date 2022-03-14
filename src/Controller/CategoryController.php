@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,7 @@ class CategoryController extends AbstractController
     public function index(CategoryRepository $categoryRepository): Response
     {
         $categorys = $categoryRepository->findAll();
+
         return $this->render('category/index.html.twig', [
             "categories" => $categorys
         ]);
@@ -48,7 +50,7 @@ class CategoryController extends AbstractController
     public function add(Request $request){
         $category = new Category;
 
-        $form = $this->createForm(Category::class, $category);
+        $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
@@ -59,8 +61,8 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('app_category');
         }
 
-        return $this->renderForm('category/index.html.twig', [
-            'add_cate_form' => $form,
+        return $this->renderForm('category/add.html.twig', [
+            'form' => $form,
         ]);
     }
 }

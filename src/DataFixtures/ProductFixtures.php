@@ -13,19 +13,19 @@ class ProductFixtures extends Fixture
     {
         // $product = new Product();
         // $manager->persist($product);
-        for($i = 0; $i < 10; $i++){
+        for($i = 0; $i < 1; $i++){
             $category = new Category;
             $category->setName('category'.$i);
             $manager->persist($category);
         }
 
-        for($i = 0; $i < 10; $i++){
-            $product = new Product;
-            $product->setName('product'.$i);
-            $product->setPrice(200+$i);
-            $product->setImage('https://m.media-amazon.com/images/I/61+ilDgVVwS._UL1500_.jpg');
-            $manager->persist($product);
-        }
+        // for($i = 0; $i < 10; $i++){
+        //     $product = new Product;
+        //     $product->setName('product'.$i);
+        //     $product->setPrice(200+$i);
+        //     $product->setImage('https://m.media-amazon.com/images/I/61+ilDgVVwS._UL1500_.jpg');
+        //     $manager->persist($product);
+        // }
 
         $manager->flush();
     }

@@ -17,11 +17,12 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('price')
+            ->add('quantity')
             ->add('image')
             ->add('category', EntityType::class, 
             [
                 
-                'label' => 'Book Authors',
+                'label' => 'Category',
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => true,

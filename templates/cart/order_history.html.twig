@@ -17,52 +17,56 @@
 		}
 	</style>
 
-
+	{% for flash in app.flashes("Error") %}
+		<p class="alert alert-danger">{{ flash }}</p>
+	{% endfor %}
 	<div class="row mt-4 m-3 text-center">
-		<h1></h1>
+		<h1>
+			Order history</h1>
+
 		<div class="row">
-			<div class="col-8">
-				<table class="table table-success table-striped">
+			<div class="col-12">
+				<table class="table table-secondary table-striped">
 					<thead>
-						<th>Id</th>
+						<th>ID</th>
 						<th>Image</th>
 						<th>Name</th>
+						<th>Quatity</th>
 						<th>Price</th>
 						<th>Status</th>
 						<th>Action</th>
-
 					</thead>
 					<tbody>
+
 						{% for item in items %}
 							{% if item.getStatus() == 'ordering' %}
 								<tr>
 									<td>{{item.getProducts().getId()}}</td>
 									<td><img src="{{item.getProducts().getImage()}}" alt="" width="100" height="100"></td>
 									<td>{{item.getProducts().getName()}}</td>
-									<td>{{item.getProducts().getPrice()}}</td>
+									<td>{{item.getQuantity()}}</td>
+									<td>{{item.getProducts().getPrice() * item.quantity}}</td>
 									<td>{{item.getStatus()}}</td>
-                                    <td><a href=""><button class="btn btn-danger">Cancel</button></a></td>
+									<td>
+										<a href="{{path('cart_received', {'id': item.id,'user':app.user.getId()})}}">
+											<button class="btn btn-danger">Cancel</button>
+										</a>
+									</td>
 								</tr>
 							{% endif %}
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			<div class="col">
-				<a href="">
-					<button class="btn btn-danger">Cancel</button>
-				</a>
-
-			</div>
 		</div>
-
 		<div class="row">
-			<div class="col-8">
-				<table class="table table-success table-striped">
+			<div class="col-12">
+				<table class="table table-primary table-striped">
 					<thead>
-						<th>Id</th>
+						<th>ID</th>
 						<th>Image</th>
 						<th>Name</th>
+						<th>Quatity</th>
 						<th>Price</th>
 						<th>Status</th>
 						<th>Action</th>
@@ -75,26 +79,28 @@
 									<td>{{item.getProducts().getId()}}</td>
 									<td><img src="{{item.getProducts().getImage()}}" alt="" width="100" height="100"></td>
 									<td>{{item.getProducts().getName()}}</td>
-									<td>{{item.getProducts().getPrice()}}</td>
+									<td>{{item.getQuantity()}}</td>
+									<td>{{item.getProducts().getPrice()  * item.quantity}}</td>
 									<td>{{item.getStatus()}}</td>
-                                    <td><a href=""><button class="btn btn-primary">Đã nhận hàng</button></a></td>
+									<td>
+										<a href="{{path('cart_received', {'id': item.id,'user':app.user.getId()})}}">
+											<button class="btn btn-primary">Đã nhận hàng</button>
+										</a>
+									</td>
 								</tr>
 							{% endif %}
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			<div class="col">
-				sdsd
-			</div>
 		</div>
 
-        
+
 		<div class="row">
-			<div class="col-8">
+			<div class="col-12">
 				<table class="table table-success table-striped">
 					<thead>
-						<th>Id</th>
+						<th>ID</th>
 						<th>Image</th>
 						<th>Name</th>
 						<th>Price</th>
@@ -109,17 +115,18 @@
 									<td>{{item.getProducts().getId()}}</td>
 									<td><img src="{{item.getProducts().getImage()}}" alt="" width="100" height="100"></td>
 									<td>{{item.getProducts().getName()}}</td>
-									<td>{{item.getProducts().getPrice()}}</td>
+									<td>{{item.getProducts().getPrice()  * item.quantity }}</td>
 									<td>{{item.getStatus()}}</td>
-                                    <td><a href=""><button class="btn btn-primary">Đã nhận hàng</button></a></td>
+									<td>
+										<a href="">
+											<button class="btn btn-primary">Rating</button>
+										</a>
+									</td>
 								</tr>
 							{% endif %}
 						{% endfor %}
 					</tbody>
 				</table>
-			</div>
-			<div class="col">
-				sdsd
 			</div>
 		</div>
 	</div>

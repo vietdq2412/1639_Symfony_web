@@ -21,34 +21,57 @@
 	<div class="row mt-4 m-3 text-center">
 		<h1></h1>
 		<div class="row">
-			<div class="col-8">
-				<table class="table table-success table-striped">
-			<thead>
-				<th>Id</th>
-				<th>Image</th>
-				<th>Name</th>
-				<th>Price</th>
-			</thead>
-			<tbody>
-			{% set total = 0 %}
-				{% for item in items %}
-				{% set total = total + item.getProducts().getPrice() %}
-					<tr>
-						<td>{{item.getProducts().getId()}}</td>
-						<td><img src="{{item.getProducts().getImage()}}" alt="" width="100" height="100"></td>
-						<td>{{item.getProducts().getName()}}</td>
-						<td>{{item.getProducts().getPrice()}}</td>
-					</tr>              
-				{% endfor %}
-			</tbody>
-		</table>
+			<div class="col-8" style="text-align: center">
+				<table class="table table-striped">
+					<thead>
+						<th>ID</th>
+						<th>Image</th>
+						<th>Name</th>
+						<th>Quatity</th>
+						<th>Price</th>
+						<th>Action</th>
+
+					</thead>
+
+
+					<tbody>
+						{% set total = 0 %}
+						{% for item in items %}
+							{% set total = total + (item.getProducts().getPrice() * item.quantity) %}
+							<tr>
+								<td>{{item.getProducts().getId()}}</td>
+								<td><img src="{{item.getProducts().getImage()}}" alt="" width="100" height="100"></td>
+								<td>{{item.getProducts().getName()}}</td>
+								<td>
+									<form action="{{path('cart_edit', {"id": item.id, 'user': app.user.id})}}">
+										<input type="text" name="quantity" value={{item.quantity}}>
+										<button  class="btn btn-outline-secondary">ok</button>
+									</form>
+								</td>
+								<td>{{item.getProducts().getPrice() * item.quantity}}</td>
+								<td>
+									<a href="{{path('cart_remove_item', {'id': item.id, 'user': app.user.getId()})}}">
+										<button class="btn btn-danger">Delete</button>
+									</a>
+									<a href="{{path('cart_edit', {'id': item.id, 'user': app.user.getId()})}}">
+										<button class="btn btn-primary">Edit quantity</button>
+									</a>
+								</td>
+
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
-			<div class="col">
-				Total:<p>{{total}}</p>
-                <a href="{{path('cart_sent_order', {'user': app.user.getId()})}}"><button class = "btn btn-primary">Send order</button></a>    
+			<div class="col mt-4">
+				<h1>Total</h1>
+				<h3>{{total}} VND</h3>
+				<a href="{{path('cart_sent_order', {'user': app.user.getId()})}}">
+					<button class="btn btn-primary">Send order</button>
+				</a>
 			</div>
 		</div>
-		
+
 	</div>
 
 {% endblock %}

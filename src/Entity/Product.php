@@ -30,6 +30,9 @@ class Product
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: Cart::class)]
     private $carts;
 
+    #[ORM\Column(type: 'integer')]
+    private $quantity;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -128,6 +131,18 @@ class Product
                 $cart->setProducts(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
