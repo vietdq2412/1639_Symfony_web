@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	{% for flash in app.flashes("Success") %}
+		<p class="alert alert-primary">{{ flash }}</p>
+	{% endfor %}
+	{% for flash in app.flashes("Error") %}
+		<p class="alert alert-danger">{{ flash }}</p>
+	{% endfor %}
+	<div class="container px-4">
+		<div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 mt-3">
+			{% for item in products %}
+				<div class="p-3 border bg-light m-3">
+					<a style="text-decoration: none" class="none-decoration" href="{{ path('app_product_detail', {'id' : item.id })}}">
+						<div class="p-3 border bg-light"><img src="{{item.image}}" alt="" width="150" height="150"></div>
+						<div class="p-3 border bg-light">{{item.name}} <br> <i style="color: black">{{item.price}} VND</i></div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

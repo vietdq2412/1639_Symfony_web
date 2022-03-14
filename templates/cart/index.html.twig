@@ -24,6 +24,7 @@
 			<div class="col-8" style="text-align: center">
 				<table class="table table-striped">
 					<thead>
+	
 						<th>ID</th>
 						<th>Image</th>
 						<th>Name</th>
@@ -39,6 +40,7 @@
 						{% for item in items %}
 							{% set total = total + (item.getProducts().getPrice() * item.quantity) %}
 							<tr>
+							
 								<td>{{item.getProducts().getId()}}</td>
 								<td><img src="{{item.getProducts().getImage()}}" alt="" width="100" height="100"></td>
 								<td>{{item.getProducts().getName()}}</td>
@@ -52,9 +54,6 @@
 								<td>
 									<a href="{{path('cart_remove_item', {'id': item.id, 'user': app.user.getId()})}}">
 										<button class="btn btn-danger">Delete</button>
-									</a>
-									<a href="{{path('cart_edit', {'id': item.id, 'user': app.user.getId()})}}">
-										<button class="btn btn-primary">Edit quantity</button>
 									</a>
 								</td>
 

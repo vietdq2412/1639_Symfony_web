@@ -21,12 +21,14 @@
 		<p class="alert alert-danger">{{ flash }}</p>
 	{% endfor %}
 	<div class="row mt-4 m-3 text-center">
-		<h1>
-			Order history</h1>
+		<h1>Order history</h1><hr>
 
 		<div class="row">
 			<div class="col-12">
 				<table class="table table-secondary table-striped">
+				<thead>
+				<th colspan="7"><h4 style="color: blue">Wait for confirmation</h4></th>
+				</thead>
 					<thead>
 						<th>ID</th>
 						<th>Image</th>
@@ -62,6 +64,9 @@
 		<div class="row">
 			<div class="col-12">
 				<table class="table table-primary table-striped">
+				<thead>
+				<th colspan="7"><h4 style="color: blue">Delivery</h4></th>
+				</thead>
 					<thead>
 						<th>ID</th>
 						<th>Image</th>
@@ -72,7 +77,6 @@
 						<th>Action</th>
 					</thead>
 					<tbody>
-
 						{% for item in items %}
 							{% if item.getStatus() == 'deliver' %}
 								<tr>
@@ -99,6 +103,9 @@
 		<div class="row">
 			<div class="col-12">
 				<table class="table table-success table-striped">
+				<thead>
+				<th colspan="7"><h4 style="color: blue">Completed</h4></th>
+				</thead>
 					<thead>
 						<th>ID</th>
 						<th>Image</th>

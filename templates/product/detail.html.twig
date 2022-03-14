@@ -1,0 +1,61 @@
+{% extends "base.html.twig" %}
+{% block body %}
+	<section class="py-5">
+		<div class="container px-4 px-lg-5 my-5">
+			<div class="row gx-4 gx-lg-5 align-items-center">
+				<div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image }}" alt="..."/></div>
+				<div class="col-md-6">
+					<div class="small mb-1"></div>
+					<h1 class="display-5 fw-bolder">{{ product.name }}</h1>
+					<div class="fs-5 mb-5">
+						<span class="text-decoration-line-through"></span>
+						<span>{{ product.price }}<i>VND</i>
+						</span>
+					</div>
+					<div class="fs-5 mb-5">
+						<span class="text-decoration-line-through"></span>
+						<span>In stock:
+							{{ product.quantity }}</span>
+					</div>
+					<div class="fs-5 mb-5">
+						<span class="text-decoration-line-through"></span>
+						<span>Category:</span>
+						{% for item in product.category %}
+							<a class="text-decoration-none" href="{{ path('app_product_detail', {'id' : item.id })}}">
+								{{ item.name }}
+							</a>
+						{% endfor %}
+					</div>
+					<p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
+					<div class="d-flex">
+
+
+						<form action="{{path('app_cart_add', {'id' : product.id, 'user': app.user.getId()})}}">
+
+							<input type="text" value=0  name="quantity">
+							<button>
+								<i class="bi-cart-fill me-1"></i>
+								Add to cart
+							</button>
+						</form>						
+					</div>
+					{% if is_granted('ROLE_ADMIN') %}
+							<br><a href="{{ path('app_product_delete', {'id' : product.id })}}">
+								<button class="btn btn-outline-dark flex-shrink-0" type="button">
+									<i class="bi-cart-fill me-1"></i>
+									Delete
+								</button>
+							</a>
+							<a href="{{ path('app_product_edit', {'id' : product.id })}}">
+								<button class="btn btn-outline-dark flex-shrink-0" type="button">
+									<i class="bi-cart-fill me-1"></i>
+									Edit
+								</button>
+							</a>
+						{% endif %}
+				</div>
+			</div>
+		</div>
+	</section>
+	<hr>
+</div>{% endblock %}
