@@ -50,7 +50,7 @@
 									<td>{{item.getProducts().getPrice() * item.quantity}}</td>
 									<td>{{item.getStatus()}}</td>
 									<td>
-										<a href="{{path('cart_received', {'id': item.id,'user':app.user.getId()})}}">
+										<a href="{{path('cart_cancel', {'id': item.id, 'user':app.user.id})}}">
 											<button class="btn btn-danger">Cancel</button>
 										</a>
 									</td>

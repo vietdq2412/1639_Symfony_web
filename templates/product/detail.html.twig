@@ -2,6 +2,9 @@
 {% block body %}
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 my-5">
+			{% for flash in app.flashes("Error") %}
+				<p class="alert alert-danger">{{ flash }}</p>
+			{% endfor %}
 			<div class="row gx-4 gx-lg-5 align-items-center">
 				<div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.image }}" alt="..."/></div>
 				<div class="col-md-6">
@@ -32,27 +35,27 @@
 
 						<form action="{{path('app_cart_add', {'id' : product.id, 'user': app.user.getId()})}}">
 
-							<input type="text" value=0  name="quantity">
+							<input type="text" value="0" name="quantity">
 							<button>
 								<i class="bi-cart-fill me-1"></i>
 								Add to cart
 							</button>
-						</form>						
+						</form>
 					</div>
 					{% if is_granted('ROLE_ADMIN') %}
-							<br><a href="{{ path('app_product_delete', {'id' : product.id })}}">
-								<button class="btn btn-outline-dark flex-shrink-0" type="button">
-									<i class="bi-cart-fill me-1"></i>
-									Delete
-								</button>
-							</a>
-							<a href="{{ path('app_product_edit', {'id' : product.id })}}">
-								<button class="btn btn-outline-dark flex-shrink-0" type="button">
-									<i class="bi-cart-fill me-1"></i>
-									Edit
-								</button>
-							</a>
-						{% endif %}
+						<br><a href="{{ path('app_product_delete', {'id' : product.id })}}">
+							<button class="btn btn-outline-dark flex-shrink-0" type="button">
+								<i class="bi-cart-fill me-1"></i>
+								Delete
+							</button>
+						</a>
+						<a href="{{ path('app_product_edit', {'id' : product.id })}}">
+							<button class="btn btn-outline-dark flex-shrink-0" type="button">
+								<i class="bi-cart-fill me-1"></i>
+								Edit
+							</button>
+						</a>
+					{% endif %}
 				</div>
 			</div>
 		</div>

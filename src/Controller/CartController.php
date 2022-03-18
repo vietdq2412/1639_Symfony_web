@@ -61,7 +61,7 @@ class CartController extends AbstractController
      /** 
      * @IsGranted("ROLE_ADMIN")
      */ 
-    #[Route('/deny/{$id}', name: 'cart_deny_order')]
+    #[Route('/deny/{id}', name: 'cart_deny_order')]
     public function deny_order($id ,CartRepository $cartRepository)
     {
         $item = $cartRepository->find($id);
@@ -81,15 +81,31 @@ class CartController extends AbstractController
 
     }
 
+    #[Route('/cancel/{id}/{user}', name: 'cart_cancel')]
+    public function cancel_order($id, $user ,CartRepository $cartRepository)
+    {
+        $item = $cartRepository->find($id);
+
+        if($item->getStatus() === 'ordering'){
+            $item->setStatus('canceled');
+        }else{
+            $this->addFlash("Error","product send already!");
+            return $this->redirectToRoute("cart_history", ['user' => $user]);
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($item);
+        $manager->flush();
+
+        return $this->redirectToRoute("cart_history", ['user' => $user]);
+
+    }
+
     #[Route('/history/{user}', name: 'cart_history')]
     public function view_history($user, CartRepository $cartRepository)
     {
         $cur_user = $this->getDoctrine()->getRepository(User::class)->find($user);
-        #$items = $cartRepository->list_item();
-
         $items = $cartRepository->findBy(array('user' => [$cur_user]));
-
-
         return $this->render('cart/order_history.html.twig', [
             'items' => $items,
         ]);
@@ -97,9 +113,6 @@ class CartController extends AbstractController
 
     #[Route('/remove_item_/{id}/{user}', name: 'cart_remove_item')]
     public function remove_item($id, $user, CartRepository $cartRepository){
-        $cur_user = $this->getDoctrine()->getRepository(User::class)->find($user);
-        #$items = $cartRepository->list_item();
-
         $item = $cartRepository->find($id);
 
         $manager = $this->getDoctrine()->getManager();
@@ -112,8 +125,6 @@ class CartController extends AbstractController
             ]);    
         }
         $manager->flush();
-
-
         return $this->redirectToRoute('app_cart_item', [
             'user' => $user
         ]);
@@ -122,20 +133,15 @@ class CartController extends AbstractController
     #[Route('/sent_order/{user}', name: 'cart_sent_order')]
     public function sent_order($user, CartRepository $cartRepository)
     {
-        #$items = $cartRepository->list_item();
-
         $cur_user = $this->getDoctrine()->getRepository(User::class)->find($user);
-
         $items = $cartRepository->findBy(array('status' => ['incart'], 'user' => [$cur_user]));
-
-
+        
         $manager = $this->getDoctrine()->getManager();
-    
         foreach($items as $item){
             $pro_quatity = $item->getProducts()->getQuantity();
             if($pro_quatity < $item->getQuantity()){
-                $this->addFlash("Error","over quatity!");
-                return $this->redirectToRoute('cart_history', ['user' => $user]);
+                $this->addFlash("Error","item ".$item->getProducts()->getname()." has only ".$item->getProducts()->getQuantity()." in stock!");
+                return $this->redirectToRoute('app_cart_item', ['user' => $user]);
             }
             $item->setStatus('ordering');
             $item->getProducts()->setQuantity($pro_quatity - $item->getQuantity());
@@ -147,19 +153,12 @@ class CartController extends AbstractController
     }
 
     #[Route('/receive/{id}/{user}', name: 'cart_received')]
-    public function receive($id, $user, CartRepository $cartRepository)
-    {
-
-        $cur_user = $this->getDoctrine()->getRepository(User::class)->find($user);
-
+    public function receive($id, $user, CartRepository $cartRepository){
         $item = $cartRepository->find($id);
-
         $item->setStatus('done');
-
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($item);
         $manager->flush();
-        
         return $this->redirectToRoute('cart_history', ['user' => $user]);
     }
 
@@ -190,9 +189,7 @@ class CartController extends AbstractController
     public function edit_cart( $id,$user, CartRepository $cartRepository, Request $request)
     {
         $item = $cartRepository->find($id);
-
         $quantity = $request->get('quantity');
-
     
         $item->setQuantity($quantity);
 

@@ -17,7 +17,9 @@
 		}
 	</style>
 
-
+{% for flash in app.flashes("Error") %}
+		<p class="alert alert-danger">{{ flash }}</p>
+	{% endfor %}
 	<div class="row mt-4 m-3 text-center">
 		<h1></h1>
 		<div class="row">

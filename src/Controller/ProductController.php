@@ -91,10 +91,8 @@ class ProductController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($product);
             $manager->flush();
-
             return $this->redirectToRoute('app_product_detail', ['id' => $id]);
         }
-
         return $this->renderForm('product/add.html.twig', [
             'form' => $form,
         ]);
